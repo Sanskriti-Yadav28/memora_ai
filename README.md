@@ -6,7 +6,7 @@ The project demonstrates how a clean user interface combined with intelligent se
 ---
 
 ## 🚀 Live Demo
-👉 
+👉 https://github.com/Sanskriti-Yadav28/memora_ai.git
 
 ---
 
