@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memora AI — Smart Photo Memory Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════════════════ -->
+  <aside class="sidebar">
+
+    <!-- Logo -->
+    <div class="logo">
+      Memora <span>AI</span>
+      <span class="logo-sub">Smart photo memory search</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-section-label">Main</div>
+
+      <div class="nav-item active" onclick="goto('search', this)">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Search memories
+      </div>
+
+      <div class="nav-item" onclick="goto('gallery', this)">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        My gallery
+        <span class="nav-badge">247</span>
+      </div>
+
+      <div class="nav-item" onclick="goto('upload', this)">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+          <path d="M10 13V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M6 7.5L10 4l4 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 13v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Upload photos
+      </div>
+
+      <div class="nav-section-label" style="margin-top:8px;">Analytics</div>
+
+      <div class="nav-item" onclick="goto('dashboard', this)">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="10" width="4" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="8" y="6" width="4" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="14" y="2" width="4" height="16" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        Dashboard
+      </div>
+    </nav>
+
+    <!-- User Footer -->
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">SK</div>
+        <div>
+          <div class="user-name">Sanskriti</div>
+          <div class="user-plan">Free plan · 1.2 GB used</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN AREA
+  ════════════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-title" id="pageTitle">Search memories</div>
+      <div class="topbar-actions">
+        <button class="btn" onclick="showToast('Feature coming soon!')">
+          <svg viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          Recent
+        </button>
+        <button class="btn btn-primary" onclick="goto('upload', document.querySelectorAll('.nav-item')[2])">
+          <svg viewBox="0 0 16 16" fill="none">
+            <line x1="8" y1="2" x2="8" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="2" y1="8" x2="14" y2="8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Upload photos
+        </button>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="content">
+
+      <!-- ── SEARCH SCREEN ─────────────────────────── -->
+      <div class="screen active" id="screen-search">
+
+        <div class="search-hero">
+          <div class="search-label">Semantic memory search</div>
+          <div class="search-box">
+            <svg width="17" height="17" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;color:var(--text-hint)">
+              <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <input id="searchInput" placeholder="Describe a memory — e.g. 'birthday with friends' or 'playing cricket in rain'…" onkeydown="if(event.key==='Enter') doSearch()"/>
+            <button class="btn btn-primary" style="border-radius:50px;padding:8px 20px;" onclick="doSearch()">Search</button>
+          </div>
+          <div class="chip-row">
+            <div class="chip" onclick="quickSearch('happy moments with family')">😊 happy moments with family</div>
+            <div class="chip" onclick="quickSearch('playing cricket outdoors')">🏏 playing cricket outdoors</div>
+            <div class="chip" onclick="quickSearch('birthday cake with friends')">🎂 birthday with friends</div>
+            <div class="chip" onclick="quickSearch('red bicycle park')">🚴 red bicycle in park</div>
+            <div class="chip" onclick="quickSearch('beach holiday summer')">🏖️ beach holiday</div>
+            <div class="chip" onclick="quickSearch('graduation celebration')">🎓 graduation day</div>
+          </div>
+        </div>
+
+        <div class="results-bar">
+          <div class="results-count" id="resultsCount">Showing <strong>all memories</strong></div>
+          <div style="font-size:12px;color:var(--text-hint);">Powered by semantic AI search</div>
+        </div>
+
+        <div class="photo-grid" id="photoGrid"></div>
+
+      </div>
+
+      <!-- ── GALLERY SCREEN ────────────────────────── -->
+      <div class="screen" id="screen-gallery">
+
+        <div class="toolbar">
+          <button class="filter-pill active" onclick="filterGal('all', this)">All photos</button>
+          <button class="filter-pill" onclick="filterGal('outdoor', this)">🌿 Outdoor</button>
+          <button class="filter-pill" onclick="filterGal('family', this)">👨‍👩‍👧 Family</button>
+          <button class="filter-pill" onclick="filterGal('celebration', this)">🎉 Celebration</button>
+          <button class="filter-pill" onclick="filterGal('sport', this)">⚽ Sports</button>
+          <button class="filter-pill" onclick="filterGal('travel', this)">✈️ Travel</button>
+        </div>
+
+        <div class="gal-grid" id="galGrid"></div>
+
+      </div>
+
+      <!-- ── UPLOAD SCREEN ─────────────────────────── -->
+      <div class="screen" id="screen-upload">
+        <div class="upload-grid">
+
+          <!-- Left: Drop Zone + How It Works -->
+          <div>
+            <div class="dropzone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+              <div class="drop-icon">
+                <svg viewBox="0 0 26 26" fill="none">
+                  <path d="M13 17V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M7.5 9.5L13 5l5.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 17v2a3 3 0 003 3h12a3 3 0 003-3v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="drop-title">Drop photos here</div>
+              <div class="drop-sub">or click to browse your device</div>
+              <div class="drop-hint">Supports JPG, PNG, HEIC, WebP — up to 50 photos at a time</div>
+              <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)"/>
+            </div>
+
+            <!-- How It Works -->
+            <div class="how-it-works">
+              <div class="hiw-label">HOW IT WORKS</div>
+              <div class="hiw-steps">
+                <div class="hiw-step">
+                  <div class="hiw-num">1</div>
+                  <div>
+                    <div class="hiw-title">Upload your photos</div>
+                    <div class="hiw-sub">Drag and drop or browse from device</div>
+                  </div>
+                </div>
+                <div class="hiw-step">
+                  <div class="hiw-num">2</div>
+                  <div>
+                    <div class="hiw-title">AI indexes your memories</div>
+                    <div class="hiw-sub">Detects faces, objects, activities, emotions</div>
+                  </div>
+                </div>
+                <div class="hiw-step">
+                  <div class="hiw-num">3</div>
+                  <div>
+                    <div class="hiw-title">Search in natural language</div>
+                    <div class="hiw-sub">Find any memory by describing it</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Upload Queue -->
+          <div class="queue-panel">
+            <div class="queue-header">
+              <span class="queue-title">Upload queue</span>
+              <span id="queueCount" style="font-size:12px;color:var(--text-hint);">0 files</span>
+            </div>
+            <div class="queue-list" id="queueList">
+              <div class="queue-empty" id="queueEmpty">
+                No files added yet.<br/>Drop photos on the left to begin.
+              </div>
+            </div>
+            <div class="upload-actions" id="uploadActions" style="display:none;">
+              <button class="btn btn-primary" onclick="startUpload()" style="flex:1;justify-content:center;">
+                <svg viewBox="0 0 16 16" fill="none">
+                  <path d="M8 11V3" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M5 6l3-3 3 3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 11v1a2 2 0 002 2h6a2 2 0 002-2v-1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+                Start upload
+              </button>
+              <button class="btn" onclick="clearQueue()">Clear all</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DASHBOARD SCREEN ──────────────────────── -->
+      <div class="screen" id="screen-dashboard">
+
+        <!-- Stat Cards -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total photos</div>
+            <div class="stat-val">247</div>
+            <div class="stat-trend">↑ 12 added this week</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-label">Searches done</div>
+            <div class="stat-val">38</div>
+            <div class="stat-trend" style="color:#F59E0B;">↑ 5 today</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-label">Memories tagged</div>
+            <div class="stat-val">189</div>
+            <div class="stat-trend" style="color:#3B82F6;">76% of library</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-label">Face groups</div>
+            <div class="stat-val">14</div>
+            <div class="stat-trend" style="color:#8B5CF6;">Across 247 photos</div>
+          </div>
+        </div>
+
+        <!-- Two Column Panels -->
+        <div class="dash-two-col">
+
+          <!-- Recent Activity -->
+          <div class="panel">
+            <div class="panel-header">
+              Recent activity
+              <span style="font-size:12px;color:var(--text-hint);font-weight:400;">Last 7 days</span>
+            </div>
+            <div class="panel-body">
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--teal);"></div>
+                <div class="act-text">12 photos uploaded and indexed by AI</div>
+                <div class="act-time">2h ago</div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:#3B82F6;"></div>
+                <div class="act-text">Search: "birthday with friends" → 4 results found</div>
+                <div class="act-time">5h ago</div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--teal);"></div>
+                <div class="act-text">8 photos uploaded from mobile</div>
+                <div class="act-time">Yesterday</div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:#3B82F6;"></div>
+                <div class="act-text">Search: "playing cricket outdoors" → 2 results</div>
+                <div class="act-time">Yesterday</div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:#F59E0B;"></div>
+                <div class="act-text">Face group "Sanskriti & Friends" created automatically</div>
+                <div class="act-time">3 days ago</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Storage + Tags -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="panel">
+              <div class="panel-header">Storage usage</div>
+              <div class="panel-body">
+                <div style="font-size:13px;color:var(--text-muted);">1.2 GB used of 5 GB free</div>
+                <div class="storage-bar-bg"><div class="storage-bar"></div></div>
+                <div class="storage-info"><span>1.2 GB</span><span>5 GB limit</span></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">Top memory tags</div>
+              <div class="panel-body">
+                <div class="tag-cloud">
+                  <div class="tag">friends</div>
+                  <div class="tag">outdoor</div>
+                  <div class="tag">family</div>
+                  <div class="tag">celebration</div>
+                  <div class="tag">cricket</div>
+                  <div class="tag">birthday</div>
+                  <div class="tag">travel</div>
+                  <div class="tag">happy</div>
+                  <div class="tag">beach</div>
+                  <div class="tag">food</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <div class="toast-dot"></div>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
